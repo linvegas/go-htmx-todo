@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Todo App</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+    <style>
+    .todo-check:checked + span {
+      text-decoration: line-through
+    }
+    </style>
+    <!-- <link href="style.css" rel="stylesheet"> -->
+  </head>
+  <body>
+    <h1>Todo app</h1>
+    <form hx-post="/add-todo" hx-target="#todo-list" hx-swap="afterbegin">
+      <label for="todo-desc">
+        New todo
+        <input type="text" name="todo-desc" placeholder="Add new todo">
+      </label>
+      <button type="submit">Add</button>
+    </form>
+    <ul id="todo-list">
+      {{range .Todos}}
+      {{block "todo-list-item" .}}
+      <li class="list-item">
+        <input
+          type="checkbox"
+          class="todo-check"
+          {{ if .Done }} checked {{ else }} {{ end }}
+        >
+        <span> {{ .Description }} </span>
+      </li>
+      {{end}}
+      {{end}}
+    </ul>
+  </body>
+</html>
+
