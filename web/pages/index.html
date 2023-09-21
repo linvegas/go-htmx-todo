@@ -10,6 +10,16 @@
     .todo-check:checked + span {
       text-decoration: line-through
     }
+    #btn-delete-todo {
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility, opacity 150ms;
+    }
+    .list-item:hover #btn-delete-todo {
+      visibility: visible;
+      opacity: 1;
+    }
     </style>
     <!-- <link href="style.css" rel="stylesheet"> -->
   </head>
@@ -32,6 +42,15 @@
           {{ if .Done }} checked {{ else }} {{ end }}
         >
         <span> {{ .Description }} </span>
+        <button
+          title="Delete todo"
+          id="btn-delete-todo"
+          hx-delete="/delete-todo"
+          hx-target="closest .list-item"
+          hx-swap="delete"
+        >
+          X
+        </button>
       </li>
       {{end}}
       {{end}}
