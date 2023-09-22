@@ -1,60 +1,59 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="dark">
   <head>
     <title>Todo App</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
-    <style>
-    .todo-check:checked + span {
-      text-decoration: line-through
-    }
-    #btn-delete-todo {
-      cursor: pointer;
-      visibility: hidden;
-      opacity: 0;
-      transition: visibility, opacity 150ms;
-    }
-    .list-item:hover #btn-delete-todo {
-      visibility: visible;
-      opacity: 1;
-    }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <style>
+      #todo-check:checked + span {
+        text-decoration: line-through
+      }
+    </style> -->
     <!-- <link href="style.css" rel="stylesheet"> -->
   </head>
-  <body>
-    <h1>Todo app</h1>
-    <form hx-post="/add-todo" hx-target="#todo-list" hx-swap="afterbegin">
-      <label for="todo-desc">
-        New todo
-        <input type="text" name="todo-desc" placeholder="Add new todo">
-      </label>
-      <button type="submit">Add</button>
-    </form>
-    <ul id="todo-list">
-      {{range .Todos}}
-      {{block "todo-list-item" .}}
-      <li class="list-item">
-        <input
-          type="checkbox"
-          class="todo-check"
-          {{ if .Done }} checked {{ else }} {{ end }}
-        >
-        <span> {{ .Description }} </span>
-        <button
-          title="Delete todo"
-          id="btn-delete-todo"
-          hx-delete="/delete-todo"
-          hx-target="closest .list-item"
-          hx-swap="delete"
-        >
-          X
-        </button>
-      </li>
-      {{end}}
-      {{end}}
-    </ul>
+  <body class="dark:bg-zinc-800 dark:text-slate-50 text-2xl">
+    <main class="w-full min-h-screen grid place-content-center gap-4">
+      <h1 class="font-bold text-3xl">Todo app</h1>
+      <form hx-post="/add-todo" hx-target="#todo-list" hx-swap="afterbegin">
+        <label for="todo-desc">
+          New todo
+          <input
+            class="dark:bg-zinc-500 rounded p-1.5"
+            type="text"
+            name="todo-desc"
+            placeholder="Add new todo">
+        </label>
+        <button class="ml-3" type="submit">Add</button>
+      </form>
+      <ul id="todo-list">
+        {{range .Todos}}
+        {{block "todo-list-item" .}}
+        <li id="list-item" class="group flex items-center gap-4">
+          <input
+            type="checkbox"
+            id="todo-check"
+            class="peer"
+            {{ if .Done }} checked {{ else }} {{ end }}
+          >
+          <span class="peer-checked:line-through"> {{ .Description }} </span>
+          <button
+            title="Delete todo"
+            id="btn-delete-todo"
+            class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150"
+            hx-delete="/delete-todo"
+            hx-target="closest #list-item"
+            hx-swap="delete"
+          >
+            X
+          </button>
+        </li>
+        {{end}}
+        {{end}}
+      </ul>
+    </main>
   </body>
 </html>
 
